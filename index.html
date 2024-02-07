@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stylish Calculator</title>
+  <!-- <link rel="stylesheet" href="styles.css"> -->
+  <style>
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+        margin: 0;
+    }
+    .calculator{
+        background-color: #444;
+        border-radius: 16px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        padding: 20px;
+        text-align: left;
+        border: 1px solid #717377;
+        /* background:transparent; */
+    }
+    div{
+        display:block;
+    }
+    #display{
+        width: 95%;
+        padding: 10px;
+        margin-bottom: 15px;
+        font-size: 1.5em;
+        color:#fff;
+        background-color: #222;
+        border:none;
+        border-radius: 5px;
+        text-align: right;
+    }
+    input[type="text i"]{
+        padding-block: 1px;
+        padding-inline: 2px;
+    }
+    .button operator{
+        background-color: #12e0c5;
+    }
+    
+    .buttons{
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap:10px;
+    }
+    /* button:nth-child(22) {
+        background-color:#9dcec7;
+    } */
+    button {
+        appearance: auto;
+        text-rendering: auto;
+        color: buttontext;
+        box-shadow: -8px -8px 15px rdba(255,255,255,0.1);
+        border: none;
+        background: transparent;
+        Letter-spacing: normal;
+        word-spacing: normal;
+        Line-height: normal;
+        text-transform: none;
+        text-indent: 0px;
+        text-shadow: none;
+        display: inline-block;
+        text-align: center;
+        align-items: flex-start;
+        cursor: default;
+    }
+    h1 {
+        font-size: 2em;
+        margin-bottom: 10px;
+        color: #f5f5f5;
+    }
+    img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+    }
+    .backspace-button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        outline: none;
+    }
+    .extra-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 4 columns */
+        grid-template-rows: repeat(4, 1fr); /* 3 rows */
+        gap: 10px;
+    }
+
+    img {
+        overflow-clip-margin: content-box;
+        overflow: clip;
+    }
+    #extra-buttons button {
+        padding: 20px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 5px;
+        background-color: #333;
+        color: #fff;
+        cursor: pointer;
+    }
+    #extra-buttons {
+        display: none; /* Initially hidden */
+    }
+    button.clear {
+        grid-column: span 1;
+        color: #12e0c5;
+    }
+    #regular-buttons,
+    #extra-buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+    #regular-buttons button {
+        padding: 20px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 5px;
+        background-color: #555;
+        color: #fff;
+        cursor: pointer;
+    }
+    button {
+        padding: 20px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 5px;
+        background-color: #555;
+        color: #fff;
+        cursor: pointer;
+    }
+    button.equals {
+        /* grid-column: span 2; */
+        background-color: #12e0c5;
+    }
+    .more-button {
+        background-color: #9dcec7;
+        grid-column: span 2;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;/* Add any other necessary styles for the "more"button */
+    }
+  </style>
+</head>
+<body>
+    <div class="calculator">
+        <div style="display: flex;">
+        <img src="Calculator.jpg" alt="Calculator Icon">
+        <!-- <img src="images/Calculator.jpg" alt="Calculator Icon"> -->
+        <h1>&nbsp;&nbsp;&nbsp;Calculator</h1>
+        <div id="history"></div>
+</div>
+        <input type="text" id="display" readonly>
+        <div class="buttons" id="regular-buttons">
+            <button onclick="appendToDisplay('**')">pow</button>
+          <button onclick="increment()">INC</button>
+          <button onclick="decrement()">DEC</button>
+          <button class="clear" onclick="clearDisplay()">AC</button>
+          <button onclick="appendToDisplay('/')">÷</button>
+          <button onclick="appendToDisplay('7')">7</button>
+          <button onclick="appendToDisplay('8')">8</button>
+          <button onclick="appendToDisplay('9')">9</button>
+          <button onclick="appendToDisplay('*')">x</button>
+          <button onclick="appendToDisplay('4')">4</button>
+          <button onclick="appendToDisplay('5')">5</button>
+          <button onclick="appendToDisplay('6')">6</button>
+          <button onclick="appendToDisplay('-')">-</button>
+          <button onclick="appendToDisplay('1')">1</button>
+          <button onclick="appendToDisplay('2')">2</button>
+          <button onclick="appendToDisplay('3')">3</button>
+          <button onclick="appendToDisplay('+')" class="button operator" class="plusButton">+</button>
+          <button onclick="appendToDisplay('%')">%</button>
+          <button onclick="appendToDisplay('0')">0</button>
+          <button onclick="appendToDisplay('.')">.</button>
+          <button class="backspace-button" onclick="backspace()">⬅️</button>
+          <button class="more-button" onclick="toggleExtraButtons()">More</button>
+          <button class="equals" onclick="calculate()">=</button>
+        <!-- Extra Buttons (Initially Hidden) -->
+        </div>
+        <div class="extra-buttons" style="display: none;">
+            <button onclick="appendToDisplay('Math.sqrt(')">√</button>
+            <button onclick="appendToDisplay('factorial(')">x!</button>
+            <button onclick="appendToDisplay('1/(')">1/x</button>
+            <button onclick="appendToDisplay('Math.log10(')">lg</button>
+            <button onclick="appendToDisplay('Math.log(')">ln</button>
+            <button onclick="appendToDisplay('(')">(</button>
+            <button onclick="appendToDisplay(')')">)</button>
+            <button onclick="appendToDisplay('Math.sin(')">sin</button>
+            <button onclick="appendToDisplay('Math.cos(')">cos</button>
+            <button onclick="appendToDisplay('Math.tan(')">tan</button>
+            <button onclick="toggleExtraButtons()">Back</button>
+            <button class="equals" onclick="calculate()">=</button>
+        <!-- </div>
+          <button class="equals" onclick="calculate()">=</button>
+        </div> -->
+      </div>
+
+  <script>
+   let displayField = document.getElementById('display');
+   let historyField = document.getElementById('history');
+   let operationHistory = [];
+
+function appendToDisplay(value) {
+  let lastChar = displayField.value.slice(-1);
+  if (['+', '-', '*', '/'].includes(value) && ['+', '-', '*', '/'].includes(lastChar)) {
+    return;
+  }
+  displayField.value += value;
+}
+function toggleExtraButtons() {
+    var extraButtons = document.querySelector('.extra-buttons');
+    var regularButtons = document.querySelector('.buttons');
+    if (extraButtons.style.display === 'none' || extraButtons.style.display === '' ) {
+        extraButtons.style.display = 'grid';
+        regularButtons.style.display = 'none';
+    } else {
+        extraButtons.style.display = 'none';
+        regularButtons.style.display = 'grid';
+    }
+}
+// function toggleExtraButtons() {
+//     var extraButtons = document.querySelector('.extra-buttons');
+//     extraButtons.style.display = extraButtons.style.display === 'none' ? 'grid' : 'none';
+// }
+
+function clearDisplay() {
+  displayField.value = '';
+}
+
+function calculate() {
+  try {
+    let result = eval(displayField.value);
+    if (isNaN(result) || !isFinite(result)) {
+      displayField.value = "Error";
+    } else {
+      displayField.value = result;
+      operationHistory.push(displayField.value); // Store the operation result in history
+      updateHistory(); 
+    }
+  } catch (error) {
+    displayField.value = 'Error';
+  }
+}
+function updateHistory() {
+    historyField.innerHTML = ""; // Clear previous history
+    for (let i = 0; i < operationHistory.length; i++) {
+        let operationItem = document.createElement('div');
+        operationItem.textContent = operationHistory[i];
+        historyField.appendChild(operationItem);
+    }
+}
+function increment() {
+  let currentValue = parseFloat(displayField.value);
+  if (!isNaN(currentValue)) {
+    displayField.value = currentValue + 1;
+  }
+}
+
+function decrement() {
+  let currentValue = parseFloat(displayField.value);
+  if (!isNaN(currentValue)) {
+    displayField.value = currentValue - 1;
+  }
+}
+function backspace() {
+        let currentValue = displayField.value;
+        displayField.value = currentValue.slice(0, -1); 
+    }
+document.addEventListener('keydown', function(event) {
+    const key = event.key;
+    switch (key) {
+      case 'Enter':
+        event.preventDefault();
+        calculate(); 
+        break;
+      case '+':
+      case '-':
+      case '*':
+      case '/':
+      case '.':
+        event.preventDefault();
+        appendToDisplay(key); 
+        break;
+      case '0':
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+      case '9':
+        appendToDisplay(key); 
+        break;
+      case 'i':
+        increment(); 
+        break;
+      case 'd':
+        decrement(); 
+        break;
+      case 'Backspace':
+        backspace();
+        break;
+    }
+  });
+  </script>
+</body>
+</html>
